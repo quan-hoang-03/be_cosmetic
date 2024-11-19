@@ -10,11 +10,11 @@ const generalAccessToken = async (payload) =>{
 }
 const generalRefreshAccessToken = async (payload) =>{
     console.log('payload',payload)
-    const access_token = jwt.sign({
+    const refresh_token = jwt.sign({
         payload 
     },'refresh_token',{expiresIn:'365d'})
 // expiresIn thời gian token hết hạn
-    return access_token
+    return refresh_token
 }
 
 module.exports = {
