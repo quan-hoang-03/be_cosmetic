@@ -17,6 +17,7 @@ const generalRefreshAccessToken = async (payload) =>{
     return refresh_token
 }
 
+// Check chỉ có admin mới xóa đc user
 module.exports = {
     generalAccessToken,
     generalRefreshAccessToken
