@@ -1,6 +1,6 @@
 const User = require("../models/UserModel")
 const bcrypt = require("bcrypt")
-const { generalAccessToken, generalRefreshAccessToken } = require("./JWTService")
+const { generalAccessToken, generalRefreshAccessToken } = require("./JwtService")
 
 const createUser = (newUser)=>{
     return new Promise( async (resolve,reject)=>{
@@ -142,10 +142,11 @@ const getDetailsUser = (id)=>{
                     message:'Người dùng không tồn tại'
                 })
             }
+            await User.findByIdAndDelete(id)
             resolve({
                 status: 'Ok',
                 message:'Success',
-                data:user
+                data: user
             })
         }catch(e){
             reject(e);
@@ -158,5 +159,5 @@ module.exports ={
     updateUser,
     deleteUser,
     getAllUser,
-    getDetailsUser,
+    getDetailsUser
 }

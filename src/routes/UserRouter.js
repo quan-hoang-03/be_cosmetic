@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router()
 const userController = require('../controllers/UserController');
-const { authMiddleware } = require('../middleware/authMiddleWare');
+const { authMiddleware,authUserMiddleware } = require('../middleware/authMiddleWare');
 
 //api đăng ký
 router.post('/sign-up',userController.createUser)
@@ -14,6 +14,8 @@ router.delete('/delete-user/:id',authMiddleware,userController.deleteUser)
 //get all users
 router.get('/getAll',authMiddleware, userController.getAllUser)
 //detail user
-router.get('/get-details/:id',userController.getDetailsUser)
+router.get('/get-details/:id',authUserMiddleware,userController.getDetailsUser)
+//api refresh_token
+router.post('/refresh-token',userController.refreshToken)
 
 module.exports = router

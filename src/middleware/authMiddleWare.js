@@ -4,7 +4,6 @@ dotenv.config()
 
 //kiểm tra người dùng có phải là admin hay không
 const authMiddleware = (req,res,next) =>{
-    console.log('checkToken',req.headers.token)
     //Lấy token từ phần header của request, Sử dụng split(' ') để tách chuỗi token, Lấy phần tử thứ 2 của mảng sau khi tách
     const token = req.headers.token.split(' ')[1]
     jwt.verify(token, 'access_token', function(err, user) {
@@ -33,7 +32,33 @@ const authMiddleware = (req,res,next) =>{
         console.log('user', user)
     });
 }
+// Tự đông cấp token mới khi token hết hạn
+const authUserMiddleware = (req,res,next) =>{
+    //Lấy token từ phần header của request, Sử dụng split(' ') để tách chuỗi token, Lấy phần tử thứ 2 của mảng sau khi tách
+    const token = req.headers.token.split(' ')[1]
+    const userId = req.params.id
+    jwt.verify(token, 'access_token', function(err, user) {
+        if(err){
+            return res.status(404).json({
+                message:"The authentication",
+                status:'error'
+            })
+        }
+        const { payload } = user
+    
+        if(payload?.isAdmin || payload?.id === userId){
+            next()
+        }else{
+            return res.status(404).json({
+                message:"The authentication",
+                status:'error'
+            })
+        }
+        console.log('user', user)
+    });
+}
 
 module.exports = {
-    authMiddleware
+    authMiddleware,
+    authUserMiddleware
 }
