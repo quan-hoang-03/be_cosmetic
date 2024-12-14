@@ -11,8 +11,8 @@ router.post('/sign-in',userController.loginUser)
 router.put('/update-user/:id',userController.updateUser)
 //Xóa thông tin người dùng
 router.delete('/delete-user/:id',authMiddleware,userController.deleteUser)
-//
-router.get('/getAll',authMiddleware,userController.getAllUser)
+//get all users
+router.get('/getAll',authMiddleware, userController.getAllUser)
 //detail user
 router.get('/get-details/:id',userController.getDetailsUser)
 
