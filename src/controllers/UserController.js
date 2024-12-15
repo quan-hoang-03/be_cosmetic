@@ -68,7 +68,7 @@ const updateUser = async (req,res)=>{
         if(!userId){
             return res.status(200).json({
                 status:'ERR',
-                message: 'ID người dùng là bắt buộc '
+                message: 'Không tồn tại ID người dùng '
             })
         }
         // Đưa req.body sang UserService
