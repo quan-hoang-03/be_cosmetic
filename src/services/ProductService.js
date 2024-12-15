@@ -92,14 +92,20 @@ const getDetailsProduct = (id)=>{
         }
     })
 }
-const getAllProduct = ()=>{
+// limit dùng để phân trang
+const getAllProduct = (limit = 10, page = 0)=>{
     return new Promise( async (resolve,reject)=>{
         try{
-            const allProduct = await Product.find()
+            const totalProduct = await Product.countDocuments()
+            // skip : bỏ qua bao nhieu thg đầu tiên để lấy thg tiếp theo
+            const allProduct = await Product.find().limit(limit).skip(page * limit)
             resolve({
                 status: 'Ok',
                 message:'Success',
-                data: allProduct
+                data: allProduct,
+                total: totalProduct,
+                pageCurrent: Number(page + 1),
+                totalPages: Math.ceil(totalProduct/limit),
             })
         }catch(e){
             reject(e);
