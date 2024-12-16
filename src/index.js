@@ -3,11 +3,16 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const routes = require('./routes');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser')
+const cors = require('cors')
 dotenv.config()
 const app = express();
 const port = process.env.PORT || 3001
 const MONGODB_URL = "mongodb+srv://quanhoangcnpm1:0988935298@clustercosmetic.gyug2.mongodb.net/";
+
+app.use(cors())
 app.use(bodyParser.json())
+app.use(cookieParser())
 
 routes(app);
 

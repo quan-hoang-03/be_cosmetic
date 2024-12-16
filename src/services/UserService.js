@@ -12,7 +12,7 @@ const createUser = (newUser)=>{
             if(checkUser !== null){
                 resolve({
                     status:'Ok',
-                    message:'The email is already'
+                    message:'Email đã tồn tại'
                 })
             }
             //hash password mã hóa mật khẩu
@@ -38,21 +38,21 @@ const createUser = (newUser)=>{
 }
 const loginUser = (userLogin)=>{
     return new Promise( async (resolve,reject)=>{
-        const {name,email,password,confirmPassword,phone} = userLogin
+        const {email,password} = userLogin
         try{
             const checkUser = await User.findOne({
                 email: email
             })
             if(checkUser === null){
                 resolve({
-                    status:'Ok',
+                    status:'Error',
                     message:'Email này chưa được đăng ký'
                 })
             }
             const comparePassword = bcrypt.compareSync(password,checkUser.password)
             if(!comparePassword){
                 resolve({
-                    status: 'Ok',
+                    status: 'Error',
                     message:'Mật khẩu hoặc tên đăng nhập không đúng',
                 })
             }
@@ -64,7 +64,6 @@ const loginUser = (userLogin)=>{
                 ud: checkUser.id,
                 isAdmin: checkUser.isAdmin
             })
-            console.log('access_token',access_token)
             resolve({
                 status: 'Ok',
                 message:'Success',

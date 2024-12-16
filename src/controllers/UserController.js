@@ -3,18 +3,18 @@ const JwtService = require('../services/JwtService')
 
 const createUser = async (req,res)=>{
     try{
-        const {name,email,password,confirmPassword,phone} = req.body
+        const {email,password,confirmPassword} = req.body
         const reg = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         const isCheckEmail = reg.test(email)
-        if(!name || !email || !password || !confirmPassword || !phone){
+        if( !email || !password || !confirmPassword ){
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The input is required'
+                message: 'Hãy nhập vào'
             })
         }else if(!isCheckEmail){
             return res.status(200).json({
                 status:'ERR',
-                message: 'The input is email'
+                message: 'Email là bắt buộc'
             })
         }else if(password !== confirmPassword){
             return res.status(200).json({
@@ -33,28 +33,30 @@ const createUser = async (req,res)=>{
 }
 const loginUser = async (req,res)=>{
     try{
-        const {name,email,password,confirmPassword,phone} = req.body
+        const {email,password} = req.body
         const reg = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         const isCheckEmail = reg.test(email)
-        if(!name || !email || !password || !confirmPassword || !phone){
+        if( !email || !password ){
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The input is required'
+                message: 'Tài khoản hoặc mật khẩu chưa đúng'
             })
         }else if(!isCheckEmail){
             return res.status(200).json({
                 status:'ERR',
-                message: 'The input is email'
-            })
-        }else if(password !== confirmPassword){
-            return res.status(200).json({
-                status:'ERR',
-                message: 'Mật khẩu đúng hãy nhập lại'
+                message: 'Email là bắt buộc'
             })
         }
         // Đưa req.body sang UserService
         const response = await UserService.loginUser(req.body)
-        return res.status(200).json(response)
+        const {refresh_token,...newRespone} = response
+
+        //config refresh_token vào cookie
+        res.cookie('refresh_token',refresh_token,{
+            HttpOnly: true,
+            Secure: true,
+        })
+        return res.status(200).json(newRespone)
     }catch(e){
         return res.status(404).json({
             message: e
@@ -129,7 +131,7 @@ const getDetailsUser = async (req,res)=>{
 }
 const refreshToken = async (req,res)=>{
     try{
-        const token = req.headers.token.split(' ')[1]
+        const token = req.cookies.refresh_token
         if(!token){
             return res.status(200).json({
                 status:'ERR',

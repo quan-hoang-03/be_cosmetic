@@ -15,11 +15,9 @@ const authMiddleware = (req,res,next) =>{
                 status:'error'
             })
         }
-        // Destructuring để lấy payload từ user
-        const { payload } = user
     
         // Kiểm tra xem user có phải admin không
-        if(payload?.isAdmin){
+        if(user?.isAdmin){
             // Nếu là admin, cho phép tiếp tục request
             next()
         }else{
@@ -29,7 +27,6 @@ const authMiddleware = (req,res,next) =>{
                 status:'error'
             })
         }
-        console.log('user', user)
     });
 }
 // Tự đông cấp token mới khi token hết hạn
@@ -44,9 +41,7 @@ const authUserMiddleware = (req,res,next) =>{
                 status:'error'
             })
         }
-        const { payload } = user
-    
-        if(payload?.isAdmin || payload?.id === userId){
+        if(user?.isAdmin || user?.id === userId){
             next()
         }else{
             return res.status(404).json({
