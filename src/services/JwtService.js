@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const generalAccessToken = async (payload) =>{
     const access_token = jwt.sign({
         ...payload 
-    },'access_token',{expiresIn:'1h'})
+    },'access_token',{expiresIn:'30s'})
 // expiresIn thời gian token hết hạn
     return access_token
 }
@@ -27,10 +27,9 @@ const refreshTokenJwtService = (token) =>{
                         message:'The Authentication',
                     })
                 }
-                const { payload } = user
                 const access_token = await generalAccessToken({
-                    id: payload?.id,
-                    isAdmin: payload?.isAdmin
+                    id: user?.id,
+                    isAdmin: user?.isAdmin
                 })
                 console.log(access_token,"access_token")
                 resolve({

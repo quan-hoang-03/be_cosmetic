@@ -7,6 +7,8 @@ const { authMiddleware,authUserMiddleware } = require('../middleware/authMiddleW
 router.post('/sign-up',userController.createUser)
 //api đăng nhập
 router.post('/sign-in',userController.loginUser)
+//api logout
+router.post('/log-out',userController.logOutUser)
 //api cập nhật thông tin người dùng
 router.put('/update-user/:id',userController.updateUser)
 //Xóa thông tin người dùng
