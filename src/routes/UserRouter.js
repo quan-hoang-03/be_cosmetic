@@ -10,7 +10,8 @@ router.post('/sign-in',userController.loginUser)
 //api logout
 router.post('/log-out',userController.logOutUser)
 //api cập nhật thông tin người dùng
-router.put('/update-user/:id',userController.updateUser)
+//Thêm authUserMiddleware để chỉ chính user đó có thể update theo user đó
+router.put('/update-user/:id',authUserMiddleware,userController.updateUser)
 //Xóa thông tin người dùng
 router.delete('/delete-user/:id',authMiddleware,userController.deleteUser)
 //get all users

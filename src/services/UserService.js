@@ -141,7 +141,6 @@ const getDetailsUser = (id)=>{
                     message:'Người dùng không tồn tại'
                 })
             }
-            await User.findByIdAndDelete(id)
             resolve({
                 status: 'Ok',
                 message:'Success',
