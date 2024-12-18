@@ -2,9 +2,9 @@ const ProductService = require('../services/ProductService')
 
 const createProduct = async (req,res)=>{
     try{
-        const {name,image,type,price,countInStoke,rating,description} = req.body
+        const {name,image,type,price,countInStock,rating,description} = req.body
         console.log(req.body,"product body")
-        if(!name || !image || !type || !price || !countInStoke || !rating){
+        if(!name || !image || !type || !price || !countInStock || !rating){
             return res.status(200).json({
                 status: 'ERR',
                 message: 'Đầu vào là bắt buộc'
