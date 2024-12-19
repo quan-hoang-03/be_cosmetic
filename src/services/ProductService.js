@@ -81,7 +81,6 @@ const getDetailsProduct = (id)=>{
                     message:'Sản phẩm không tồn tại'
                 })
             }
-            await Product.findByIdAndDelete(id)
             resolve({
                 status: 'Ok',
                 message:'Success',
