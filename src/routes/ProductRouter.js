@@ -13,5 +13,7 @@ router.delete('/delete/:id',authMiddleware, productController.deleteProduct)
 router.get('/get-details/:id',productController.getDetailsProduct)
 //api get list sản phẩm
 router.get('/get-all', productController.getAllProduct)
+//api xóa all sản phẩm
+router.post("/delete-many", productController.deleteMany);
 
 module.exports = router

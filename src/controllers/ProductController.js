@@ -58,6 +58,25 @@ const deleteProduct = async (req,res)=>{
         })
     }
 }
+const deleteMany = async (req, res) => {
+  try {
+    const ids = req.body.ids;
+    console.log(req.body, "body");
+    if (!ids) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "Không tồn tại ID sản phẩm",
+      });
+    }
+    // Đưa req.body sang ProductService
+    const response = await ProductService.deleteManyProduct(ids);
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
 const getDetailsProduct = async (req,res)=>{
     try{
         const productId = req.params.id
@@ -88,10 +107,11 @@ const getAllProduct = async (req,res)=>{
         })
     }
 }
-module.exports ={
-    createProduct,
-    updateProduct,
-    deleteProduct,
-    getDetailsProduct,
-    getAllProduct
-}
+module.exports = {
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getDetailsProduct,
+  getAllProduct,
+  deleteMany,
+};

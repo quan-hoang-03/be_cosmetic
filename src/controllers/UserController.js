@@ -101,6 +101,24 @@ const deleteUser = async (req,res)=>{
         })
     }
 }
+const deleteMany = async (req, res) => {
+  try {
+    const ids = req.body.ids;
+    if (!ids) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "Không tồn tại ID người dùng",
+      });
+    }
+    // Đưa req.body sang ProductService
+    const response = await UserService.deleteManyUser(ids);
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
 const getAllUser = async (req,res)=>{
     try{
         // Đưa req.body sang UserService
@@ -161,13 +179,14 @@ const logOutUser = async (req,res)=>{
     }
 }
 
-module.exports ={
-    createUser,
-    loginUser,
-    updateUser,
-    deleteUser,
-    getAllUser,
-    getDetailsUser,
-    refreshToken,
-    logOutUser
-}
+module.exports = {
+  createUser,
+  loginUser,
+  updateUser,
+  deleteUser,
+  getAllUser,
+  getDetailsUser,
+  refreshToken,
+  logOutUser,
+  deleteMany,
+};

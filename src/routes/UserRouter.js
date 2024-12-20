@@ -20,5 +20,7 @@ router.get('/getAll',authMiddleware, userController.getAllUser)
 router.get('/get-details/:id',authUserMiddleware,userController.getDetailsUser)
 //api refresh_token
 router.post('/refresh-token',userController.refreshToken)
+//api xóa all sản phẩm
+router.post("/delete-many", userController.deleteMany);
 
 module.exports = router

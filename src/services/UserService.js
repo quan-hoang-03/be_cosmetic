@@ -117,6 +117,19 @@ const deleteUser = (id)=>{
         }
     })
 }
+const deleteManyUser = (ids) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await User.deleteMany({ _id: ids });
+      resolve({
+        status: "Ok",
+        message: "Đã xóa tất cả sản phẩm",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 const getAllUser = ()=>{
     return new Promise( async (resolve,reject)=>{
         try{
@@ -151,11 +164,12 @@ const getDetailsUser = (id)=>{
         }
     })
 }
-module.exports ={
-    createUser,
-    loginUser,
-    updateUser,
-    deleteUser,
-    getAllUser,
-    getDetailsUser
-}
+module.exports = {
+  createUser,
+  loginUser,
+  updateUser,
+  deleteUser,
+  getAllUser,
+  getDetailsUser,
+  deleteManyUser,
+};
