@@ -15,5 +15,7 @@ router.get('/get-details/:id',productController.getDetailsProduct)
 router.get('/get-all', productController.getAllProduct)
 //api xóa all sản phẩm
 router.post("/delete-many", productController.deleteMany);
+//api lấy type product
+router.get("/get-all-type", productController.getAllType);
 
 module.exports = router
