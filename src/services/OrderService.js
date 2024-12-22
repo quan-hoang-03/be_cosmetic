@@ -38,7 +38,22 @@ const createOrder = (newOrder) => {
       reject(e);
     }
   });
-};
+}; 
+const getAllOrder = () =>{
+    return new Promise(async(resolve, reject) =>{
+        try{
+            const allOrder = await Order.find()
+            resolve({
+                status: "Ok",
+                message: "Success",
+                data: allOrder
+            })
+        }catch(e){
+            reject(e)
+        }
+    })
+}
 module.exports = {
   createOrder,
+  getAllOrder
 };
