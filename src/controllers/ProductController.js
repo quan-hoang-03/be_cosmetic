@@ -99,7 +99,7 @@ const getAllProduct = async (req,res)=>{
     try{
         const {limit,page,sort,filter} = req.query
         // Đưa req.body sang ProductService
-        const response = await ProductService.getAllProduct(Number(limit) || 8,Number(page) || 0,sort,filter)
+        const response = await ProductService.getAllProduct(Number(limit) || null,Number(page) || 0,sort,filter)
         return res.status(200).json(response)
     }catch(e){
         return res.status(404).json({
