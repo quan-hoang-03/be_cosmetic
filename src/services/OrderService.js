@@ -1,4 +1,5 @@
 const Order = require("../models/OrderProduct");
+const Product = require("../models/ProductModel");
 
 const createOrder = (newOrder) => {
   return new Promise(async (resolve, reject) => {
@@ -14,26 +15,51 @@ const createOrder = (newOrder) => {
       user, // Thêm user vào đây
     } = newOrder;
     try {
-      const createdOrder = await Order.create({
-        orderItems,
-        shippingAddress: {
-          fullName,
-          address,
-          phone,
-        },
-        paymentMethod,
-        itemsPrice,
-        shippingPrice,
-        totalPrice,
-        user: user, // Sử dụng user từ newOrder
-      });
-      if (createdOrder) {
-        resolve({
-          status: "OK",
-          message: "Success",
-          data: createdOrder,
-        });
-      }
+      const promises = orderItems.map(async (order)=>{
+        const productData = await Product.findOneAndUpdate(
+          {
+            _id: order.product,
+            quality: { $gte: order.amount },
+          },
+          {
+            $inc: {
+              quality: -order.amount,
+              selled: +order.quality,
+            },
+          },
+          { new: true }
+        )
+        console.log('productData',productData)
+        if (productData) {
+          const createdOrder = await Order.create({
+            orderItems,
+            shippingAddress: {
+              fullName,
+              address,
+              phone,
+            },
+            paymentMethod,
+            itemsPrice,
+            shippingPrice,
+            totalPrice,
+            user: user, // Sử dụng user từ newOrder
+          });
+          if (createdOrder) {
+            return {
+              status: "OK",
+              message: "Success",
+            };
+          }
+        } else {
+          resolve({
+            status: "OK",
+            message: "Error",
+            data: [order.product],
+          });
+        }
+      })
+      const results = await Promise.all(promises)
+      console.log(results,"thong tin san pham")
     } catch (e) {
       reject(e);
     }
